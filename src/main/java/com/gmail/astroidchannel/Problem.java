@@ -5,4 +5,16 @@ import java.util.Map;
 
 public class Problem {
     private Map<String, FuzzySet> sets = new HashMap<>();
+
+    public Problem(Map<String, FuzzySet> sets) {
+        this.sets = sets;
+    }
+
+    public Map<String, FuzzySet> getSets() {
+        return sets;
+    }
+
+    public void setSets(Map<String, FuzzySet> sets) {
+        this.sets = sets;
+    }
 }
