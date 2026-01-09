@@ -2,6 +2,8 @@ package com.gmail.astroidchannel.membershipFunctions;
 
 import com.google.common.collect.Range;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ public class TriangularFunction implements MembershipFunction {
 //    private Range<Double> carrier;
 //    private Range<Double> core;
 //    private Set<Range<Double>> spectrum;
-//    private Shape shape;
+//    private Shape shape; // Опуклість
 //    private MembershipFunction membershipFunction;
 
     public TriangularFunction(double a, double b, double c) {
@@ -72,22 +74,26 @@ public class TriangularFunction implements MembershipFunction {
 
     @Override
     public double findHeight() {
-        return 0;
+        return calculate(b);
     }
 
     @Override
     public Range<Double> findCarrier() {
-        return null;
+        return Range.open(a, c);
     }
 
     @Override
     public Range<Double> findCore() {
-        return null;
+        return Range.closed(b, b);
     }
 
     @Override
     public Set<Range<Double>> findSpectrum() {
-        return Set.of();
+        Set<Range<Double>> boundaries = new LinkedHashSet<>();
+        boundaries.add(Range.open(a,b));
+        boundaries.add(Range.open(b,c));
+
+        return boundaries;
     }
 
     @Override
