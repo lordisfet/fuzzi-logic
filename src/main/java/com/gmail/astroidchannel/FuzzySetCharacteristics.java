@@ -12,4 +12,5 @@ public interface FuzzySetCharacteristics {
     // TODO: isNormal
     // TODO: Normalization
     // TODO: isConvex
+    // TODO: findAlphaLevelSet
 }

@@ -1,5 +1,7 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
+import java.util.Objects;
+
 public class TriangularFunction implements MembershipFunction {
     private double a;
     private double b;
@@ -9,6 +11,12 @@ public class TriangularFunction implements MembershipFunction {
         this.a = a;
         this.b = b;
         this.c = c;
+    }
+
+    public TriangularFunction(TriangularFunction other) {
+        this.a = other.a;
+        this.b = other.b;
+        this.c = other.c;
     }
 
     public double getA() {
@@ -41,17 +49,23 @@ public class TriangularFunction implements MembershipFunction {
     }
 
     @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TriangularFunction that = (TriangularFunction) o;
+        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0;
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(a, b, c);
+    }
+
+    @Override
+    public String toString() {
+        return "TriangularFunction{" +
+                "a=" + a +
+                ", b=" + b +
+                ", c=" + c +
+                '}';
     }
 }

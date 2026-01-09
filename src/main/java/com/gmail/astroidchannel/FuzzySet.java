@@ -4,6 +4,8 @@ import com.gmail.astroidchannel.membershipFunctions.MembershipFunction;
 import com.gmail.astroidchannel.membershipFunctions.Shape;
 import com.google.common.collect.Range;
 
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class FuzzySet implements FuzzySetCharacteristics {
@@ -21,6 +23,15 @@ public class FuzzySet implements FuzzySetCharacteristics {
         this.spectrum = spectrum;
         this.shape = shape;
         this.membershipFunction = membershipFunction;
+    }
+
+    public FuzzySet(FuzzySet other) {
+        this.height = other.height;
+        this.carrier = other.carrier;
+        this.core = other.core;
+        this.spectrum = new LinkedHashSet<>(other.spectrum);
+        this.shape = other.shape;
+        this.membershipFunction = other.membershipFunction;
     }
 
     public double getHeight() {
@@ -92,17 +103,26 @@ public class FuzzySet implements FuzzySetCharacteristics {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        FuzzySet fuzzySet = (FuzzySet) o;
+        return Double.compare(height, fuzzySet.height) == 0 && Objects.equals(carrier, fuzzySet.carrier) && Objects.equals(core, fuzzySet.core) && Objects.equals(spectrum, fuzzySet.spectrum) && shape == fuzzySet.shape && Objects.equals(membershipFunction, fuzzySet.membershipFunction);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public int hashCode() {
+        return Objects.hash(height, carrier, core, spectrum, shape, membershipFunction);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return "FuzzySet{" +
+                "height=" + height +
+                ", carrier=" + carrier +
+                ", core=" + core +
+                ", spectrum=" + spectrum +
+                ", shape=" + shape +
+                ", membershipFunction=" + membershipFunction +
+                '}';
     }
 }
