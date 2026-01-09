@@ -45,7 +45,20 @@ public class TriangularFunction implements MembershipFunction {
 
     @Override
     public double calculate(double x) {
-        return 0;
+        if (Double.compare(x, a) <= 0) {
+            return 0;
+        }
+        if (Double.compare(x, c) >= 0) {
+            return 0;
+        }
+        if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
+            return (x - a) / (b - a);
+        }
+        if (Double.compare(x, b) > 0 && Double.compare(x, c) <= 0) {
+            return (c - x) / (c - b);
+        }
+
+        throw new IllegalArgumentException("x = " + x + " is not in conditions");
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.gmail.astroidchannel;
 
 import com.gmail.astroidchannel.membershipFunctions.MembershipFunction;
 import com.gmail.astroidchannel.membershipFunctions.Shape;
+import com.gmail.astroidchannel.membershipFunctions.TriangularFunction;
 import com.google.common.collect.Range;
 
 import java.util.LinkedHashSet;
@@ -35,7 +36,7 @@ public class FuzzySet implements FuzzySetCharacteristics {
     }
 
     public double getHeight() {
-        return height;
+        return 0;
     }
 
     public void setHeight(double height) {
