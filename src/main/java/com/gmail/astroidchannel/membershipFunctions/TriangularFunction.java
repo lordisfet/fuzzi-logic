@@ -1,11 +1,20 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
+import com.google.common.collect.Range;
+
 import java.util.Objects;
+import java.util.Set;
 
 public class TriangularFunction implements MembershipFunction {
     private double a;
     private double b;
     private double c;
+//    private double height;
+//    private Range<Double> carrier;
+//    private Range<Double> core;
+//    private Set<Range<Double>> spectrum;
+//    private Shape shape;
+//    private MembershipFunction membershipFunction;
 
     public TriangularFunction(double a, double b, double c) {
         this.a = a;
@@ -59,6 +68,26 @@ public class TriangularFunction implements MembershipFunction {
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
+    }
+
+    @Override
+    public double findHeight() {
+        return 0;
+    }
+
+    @Override
+    public Range<Double> findCarrier() {
+        return null;
+    }
+
+    @Override
+    public Range<Double> findCore() {
+        return null;
+    }
+
+    @Override
+    public Set<Range<Double>> findSpectrum() {
+        return Set.of();
     }
 
     @Override
