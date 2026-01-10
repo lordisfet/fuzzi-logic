@@ -1,5 +1,6 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
+import com.gmail.astroidchannel.membershipFunctions.subFunctions.LinearThroughDots;
 import com.google.common.collect.Range;
 
 import java.util.LinkedHashSet;
@@ -70,10 +71,12 @@ public class TrapezoidalFunction implements MembershipFunction {
             return 1;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
-            return (x - a) / (b - a);
+            LinearThroughDots leftPart = new LinearThroughDots(a,b, LinearThroughDots.Direction.UP);
+            return leftPart.calculate(x);
         }
         if (Double.compare(x, c) > 0 && Double.compare(x, d) <= 0) {
-            return (d - x) / (d - c);
+            LinearThroughDots rightPart = new LinearThroughDots(c, d, LinearThroughDots.Direction.DOWN);
+            return rightPart.calculate(x);
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
