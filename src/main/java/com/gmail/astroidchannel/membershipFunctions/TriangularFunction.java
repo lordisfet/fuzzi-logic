@@ -1,5 +1,7 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
+import com.gmail.astroidchannel.membershipFunctions.subFunctions.LinearThroughDots;
+import com.gmail.astroidchannel.membershipFunctions.subFunctions.SubFunction;
 import com.google.common.collect.Range;
 
 import java.util.LinkedHashMap;
@@ -11,6 +13,7 @@ public class TriangularFunction implements MembershipFunction {
     private double a;
     private double b;
     private double c;
+
 //    private double height;
 //    private Range<Double> carrier;
 //    private Range<Double> core;
@@ -55,6 +58,9 @@ public class TriangularFunction implements MembershipFunction {
 
     @Override
     public double calculate(double x) {
+        if (x == b) {
+            return 1;
+        }
         if (Double.compare(x, a) <= 0) {
             return 0;
         }
@@ -62,10 +68,12 @@ public class TriangularFunction implements MembershipFunction {
             return 0;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
-            return (x - a) / (b - a);
+            SubFunction leftPart = new LinearThroughDots(a, b, LinearThroughDots.Direction.UP);
+            return leftPart.calculate(x);
         }
         if (Double.compare(x, b) > 0 && Double.compare(x, c) <= 0) {
-            return (c - x) / (c - b);
+            SubFunction rightPart = new LinearThroughDots(b, c, LinearThroughDots.Direction.DOWN);
+            return rightPart.calculate(x);
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
