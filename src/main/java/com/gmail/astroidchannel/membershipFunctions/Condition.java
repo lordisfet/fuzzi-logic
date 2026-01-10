@@ -1,6 +1,6 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
-public enum Shape {
+public enum Condition {
     NORMAL,
     SUBNORMAL,
     NOT_NORMAL
