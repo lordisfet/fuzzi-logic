@@ -3,10 +3,12 @@ package com.gmail.astroidchannel.membershipFunctions.subFunctions;
 import java.util.Objects;
 
 
-/**x1 cant be equal x2, throw exception
+/**
+ * x1 cant be equal x2, throw exception
  * if x1 < x2 value increases from 0 to 1,
- * if x1 > x2 value decreases from 1 to 0,**/
-public class LinearThroughDots implements SubFunction{
+ * if x1 > x2 value decreases from 1 to 0,
+ **/
+public class LinearThroughDots implements SubFunction {
     private double x1;
     private double x2;
     private Direction direction;
@@ -14,6 +16,9 @@ public class LinearThroughDots implements SubFunction{
     public enum Direction {
         UP,
         DOWN
+    }
+
+    public LinearThroughDots() {
     }
 
     public LinearThroughDots(double x1, double x2, Direction direction) {
@@ -61,8 +66,7 @@ public class LinearThroughDots implements SubFunction{
         if (direction == Direction.UP) {
             return (x - x1) / (x2 - x1);
         }
-        if (direction == Direction.DOWN)
-        {
+        if (direction == Direction.DOWN) {
             return (x2 - x) / (x2 - x1);
         }
 

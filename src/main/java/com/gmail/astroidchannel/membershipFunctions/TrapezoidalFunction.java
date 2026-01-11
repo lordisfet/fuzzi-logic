@@ -7,17 +7,24 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.gmail.astroidchannel.membershipFunctions.subFunctions.LinearThroughDots.Direction.DOWN;
+import static com.gmail.astroidchannel.membershipFunctions.subFunctions.LinearThroughDots.Direction.UP;
+
 public class TrapezoidalFunction implements MembershipFunction {
     private double a;
     private double b;
     private double c;
     private double d;
+    private LinearThroughDots leftPart;
+    private LinearThroughDots rightPart;
 
     public TrapezoidalFunction(double a, double b, double c, double d) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
+        leftPart = new LinearThroughDots(a, b, UP);
+        rightPart = new LinearThroughDots(c, d, DOWN);
     }
 
     public TrapezoidalFunction(TrapezoidalFunction other) {
@@ -25,6 +32,8 @@ public class TrapezoidalFunction implements MembershipFunction {
         this.b = other.b;
         this.c = other.c;
         this.d = other.d;
+        leftPart = new LinearThroughDots(a, b, UP);
+        rightPart = new LinearThroughDots(c, d, DOWN);
     }
 
     public double getA() {
@@ -59,6 +68,22 @@ public class TrapezoidalFunction implements MembershipFunction {
         this.d = d;
     }
 
+    public LinearThroughDots getLeftPart() {
+        return leftPart;
+    }
+
+    public void setLeftPart(LinearThroughDots leftPart) {
+        this.leftPart = leftPart;
+    }
+
+    public LinearThroughDots getRightPart() {
+        return rightPart;
+    }
+
+    public void setRightPart(LinearThroughDots rightPart) {
+        this.rightPart = rightPart;
+    }
+
     @Override
     public double calculate(double x) {
         if (Double.compare(x, a) <= 0) {
@@ -71,11 +96,9 @@ public class TrapezoidalFunction implements MembershipFunction {
             return 1;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
-            LinearThroughDots leftPart = new LinearThroughDots(a,b, LinearThroughDots.Direction.UP);
             return leftPart.calculate(x);
         }
         if (Double.compare(x, c) > 0 && Double.compare(x, d) <= 0) {
-            LinearThroughDots rightPart = new LinearThroughDots(c, d, LinearThroughDots.Direction.DOWN);
             return rightPart.calculate(x);
         }
 
@@ -110,12 +133,12 @@ public class TrapezoidalFunction implements MembershipFunction {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TrapezoidalFunction that = (TrapezoidalFunction) o;
-        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0 && Double.compare(d, that.d) == 0;
+        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0 && Double.compare(d, that.d) == 0 && Objects.equals(leftPart, that.leftPart) && Objects.equals(rightPart, that.rightPart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b, c, d);
+        return Objects.hash(a, b, c, d, leftPart, rightPart);
     }
 
     @Override
@@ -125,6 +148,8 @@ public class TrapezoidalFunction implements MembershipFunction {
                 ", b=" + b +
                 ", c=" + c +
                 ", d=" + d +
+                ", leftPart=" + leftPart +
+                ", rightPart=" + rightPart +
                 '}';
     }
 }
