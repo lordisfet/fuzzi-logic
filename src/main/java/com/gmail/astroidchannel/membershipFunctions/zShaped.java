@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class zShaped implements MembershipFunction {
 
+
     @Override
     public double calculate(double x) {
         return 0;
