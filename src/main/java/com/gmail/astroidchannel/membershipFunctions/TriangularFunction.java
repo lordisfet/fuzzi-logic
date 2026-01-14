@@ -1,22 +1,15 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
-import com.gmail.astroidchannel.membershipFunctions.subFunctions.LinearThroughDots;
-import com.gmail.astroidchannel.membershipFunctions.subFunctions.SubFunction;
 import com.google.common.collect.Range;
-
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import static com.gmail.astroidchannel.membershipFunctions.subFunctions.LinearThroughDots.Direction.DOWN;
-import static com.gmail.astroidchannel.membershipFunctions.subFunctions.LinearThroughDots.Direction.UP;
 
 public class TriangularFunction implements MembershipFunction {
     private double a;
     private double b;
     private double c;
-    private LinearThroughDots leftPart;
-    private LinearThroughDots rightPart;
+
 
 //    private double height;
 //    private Range<Double> carrier;
@@ -28,16 +21,12 @@ public class TriangularFunction implements MembershipFunction {
         this.a = a;
         this.b = b;
         this.c = c;
-        leftPart = new LinearThroughDots(a, b, UP);
-        rightPart = new LinearThroughDots(b, c, DOWN);
     }
 
     public TriangularFunction(TriangularFunction other) {
         this.a = other.a;
         this.b = other.b;
         this.c = other.c;
-        this.leftPart = new LinearThroughDots(other.leftPart);
-        this.rightPart = new LinearThroughDots(other.rightPart);
     }
 
     public double getA() {
@@ -64,22 +53,6 @@ public class TriangularFunction implements MembershipFunction {
         this.c = c;
     }
 
-    public LinearThroughDots getLeftPart() {
-        return leftPart;
-    }
-
-    public void setLeftPart(LinearThroughDots leftPart) {
-        this.leftPart = leftPart;
-    }
-
-    public LinearThroughDots getRightPart() {
-        return rightPart;
-    }
-
-    public void setRightPart(LinearThroughDots rightPart) {
-        this.rightPart = rightPart;
-    }
-
     @Override
     public double calculate(double x) {
         if (x == b) {
@@ -92,10 +65,10 @@ public class TriangularFunction implements MembershipFunction {
             return 0;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
-            return leftPart.calculate(x);
+            return FuzzyMath.linearThroughDots(x, a, b, true);
         }
         if (Double.compare(x, b) > 0 && Double.compare(x, c) <= 0) {
-            return rightPart.calculate(x);
+            return FuzzyMath.linearThroughDots(x, b, c, false);
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
@@ -129,12 +102,12 @@ public class TriangularFunction implements MembershipFunction {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TriangularFunction that = (TriangularFunction) o;
-        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0 && Objects.equals(leftPart, that.leftPart) && Objects.equals(rightPart, that.rightPart);
+        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b, c, leftPart, rightPart);
+        return Objects.hash(a, b, c);
     }
 
     @Override
@@ -143,8 +116,6 @@ public class TriangularFunction implements MembershipFunction {
                 "a=" + a +
                 ", b=" + b +
                 ", c=" + c +
-                ", leftPart=" + leftPart +
-                ", rightPart=" + rightPart +
                 '}';
     }
 }
