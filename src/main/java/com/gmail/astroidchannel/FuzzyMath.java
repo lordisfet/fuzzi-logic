@@ -1,7 +1,9 @@
-package com.gmail.astroidchannel.membershipFunctions;
+package com.gmail.astroidchannel;
 
 
 public final class FuzzyMath {
+    public final static double EPS = 0.00001;
+
     public static double linearThroughDots(double x, double min, double max, boolean isRising) {
 
         if (min == max) {

@@ -1,5 +1,6 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
+import com.gmail.astroidchannel.FuzzyMath;
 import com.google.common.collect.Range;
 import java.util.LinkedHashSet;
 import java.util.Objects;

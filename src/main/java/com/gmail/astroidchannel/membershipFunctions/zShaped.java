@@ -1,5 +1,6 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
+import com.gmail.astroidchannel.FuzzyMath;
 import com.google.common.collect.Range;
 
 import java.util.Objects;
@@ -48,7 +49,17 @@ public class zShaped implements MembershipFunction {
 
     @Override
     public double calculate(double x) {
-        return 0;
+        if (Double.compare(x, a) <= 0) {
+            return 1;
+        }
+        if (Double.compare(x, b) >= 0) {
+            return 0;
+        }
+        if (Double.compare(x, a) > 0 && Double.compare(x, b) < 0) {
+            return FuzzyMath.cosine(x, a, b, coefficient);
+        }
+
+        throw new IllegalArgumentException("x = " + x + " is not in conditions");
     }
 
     @Override
