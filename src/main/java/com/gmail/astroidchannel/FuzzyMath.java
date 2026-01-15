@@ -22,6 +22,7 @@ public final class FuzzyMath {
     }
 
     public static double cosine(double x, double min, double max, double phi) {
-        return phi + (1 / phi) * Math.cos(Math.PI * (x - min) / (max - min));
+//        return phi + (1 / phi) * Math.cos(Math.PI * (x - min) / (max - min));
+        return phi + (phi * Math.cos(Math.PI * (x - min) / (max - min)));
     }
 }

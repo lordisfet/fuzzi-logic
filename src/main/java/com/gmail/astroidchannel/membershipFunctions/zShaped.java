@@ -8,28 +8,20 @@ import java.util.Objects;
 import java.util.Set;
 
 public class zShaped implements MembershipFunction {
-    private double coefficient;
     private double a;
     private double b;
+    private double coefficient;
 
-    public zShaped(double coefficient, double a, double b) {
-        this.coefficient = coefficient;
+    public zShaped(double a, double b, double coefficient) {
         this.a = a;
         this.b = b;
+        this.coefficient = coefficient;
     }
 
     public zShaped(zShaped other) {
-        this.coefficient = other.coefficient;
         this.a = other.a;
         this.b = other.b;
-    }
-
-    public double getCoefficient() {
-        return coefficient;
-    }
-
-    public void setCoefficient(double coefficient) {
-        this.coefficient = coefficient;
+        this.coefficient = other.coefficient;
     }
 
     public double getA() {
@@ -46,6 +38,14 @@ public class zShaped implements MembershipFunction {
 
     public void setB(double b) {
         this.b = b;
+    }
+
+    public double getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(double coefficient) {
+        this.coefficient = coefficient;
     }
 
     @Override
@@ -89,20 +89,20 @@ public class zShaped implements MembershipFunction {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         zShaped zShaped = (zShaped) o;
-        return Double.compare(coefficient, zShaped.coefficient) == 0 && Double.compare(a, zShaped.a) == 0 && Double.compare(b, zShaped.b) == 0;
+        return Double.compare(a, zShaped.a) == 0 && Double.compare(b, zShaped.b) == 0 && Double.compare(coefficient, zShaped.coefficient) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(coefficient, a, b);
+        return Objects.hash(a, b, coefficient);
     }
 
     @Override
     public String toString() {
         return "zShaped{" +
-                "coefficient=" + coefficient +
-                ", a=" + a +
+                "a=" + a +
                 ", b=" + b +
+                ", coefficient=" + coefficient +
                 '}';
     }
 }
