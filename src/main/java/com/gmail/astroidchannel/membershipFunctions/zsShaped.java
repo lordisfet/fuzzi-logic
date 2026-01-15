@@ -7,21 +7,24 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class zShaped implements MembershipFunction {
+public class zsShaped implements MembershipFunction {
     private double a;
     private double b;
     private double coefficient;
+    private boolean isRising;
 
-    public zShaped(double a, double b, double coefficient) {
+    public zsShaped(double a, double b, double coefficient, boolean isRising) {
         this.a = a;
         this.b = b;
         this.coefficient = coefficient;
+        this.isRising = isRising;
     }
 
-    public zShaped(zShaped other) {
+    public zsShaped(zsShaped other) {
         this.a = other.a;
         this.b = other.b;
         this.coefficient = other.coefficient;
+        this.isRising = other.isRising;
     }
 
     public double getA() {
@@ -48,13 +51,21 @@ public class zShaped implements MembershipFunction {
         this.coefficient = coefficient;
     }
 
+    public boolean isRising() {
+        return isRising;
+    }
+
+    public void setRising(boolean rising) {
+        isRising = rising;
+    }
+
     @Override
     public double calculate(double x) {
         if (Double.compare(x, a) <= 0) {
-            return 1;
+            return isRising ? 0 : 1;
         }
         if (Double.compare(x, b) >= 0) {
-            return 0;
+            return isRising ? 1 : 0;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) < 0) {
             return FuzzyMath.cosine(x, a, b, coefficient);
@@ -70,12 +81,12 @@ public class zShaped implements MembershipFunction {
 
     @Override
     public Range<Double> findCarrier() {
-        return Range.open(0., b);
+        return isRising ? Range.open(a, Double.MAX_VALUE) : Range.open(Double.MIN_VALUE, b);
     }
 
     @Override
     public Range<Double> findCore() {
-        return Range.closed(0., a);
+        return isRising ? Range.closed(b, Double.MAX_VALUE) : Range.closed(Double.MIN_VALUE, a);
     }
 
     @Override
@@ -88,8 +99,8 @@ public class zShaped implements MembershipFunction {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        zShaped zShaped = (zShaped) o;
-        return Double.compare(a, zShaped.a) == 0 && Double.compare(b, zShaped.b) == 0 && Double.compare(coefficient, zShaped.coefficient) == 0;
+        zsShaped zsShaped = (zsShaped) o;
+        return Double.compare(a, zsShaped.a) == 0 && Double.compare(b, zsShaped.b) == 0 && Double.compare(coefficient, zsShaped.coefficient) == 0;
     }
 
     @Override

@@ -10,7 +10,7 @@ class zShapedTest {
     @Test
     void testZShapedCalculate() {
         double a = 3, b = 6, coefficient = 1. / 2;
-        MembershipFunction function = new zShaped(a, b, coefficient);
+        MembershipFunction function = new zsShaped(a, b, coefficient, false);
 
         assertEquals(1, function.calculate(0), FuzzyMath.EPS);
         assertEquals(1, function.calculate(2), FuzzyMath.EPS);
