@@ -3,6 +3,7 @@ package com.gmail.astroidchannel.membershipFunctions;
 import com.gmail.astroidchannel.FuzzyMath;
 import com.google.common.collect.Range;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -64,22 +65,24 @@ public class zShaped implements MembershipFunction {
 
     @Override
     public double findHeight() {
-        return 0;
+        return 1;
     }
 
     @Override
     public Range<Double> findCarrier() {
-        return null;
+        return Range.open(0., b);
     }
 
     @Override
     public Range<Double> findCore() {
-        return null;
+        return Range.closed(0., a);
     }
 
     @Override
     public Set<Range<Double>> findSpectrum() {
-        return Set.of();
+        Set<Range<Double>> result = new LinkedHashSet<>();
+        result.add((Range.open(a, b)));
+        return result;
     }
 
     @Override
