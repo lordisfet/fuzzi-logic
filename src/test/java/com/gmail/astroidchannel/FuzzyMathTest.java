@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FuzzyMathTest {
 
     @Test
-    void testLinearFalling() {
+    void testLinearThroughDots() {
         double lower = 4.0;
         double upper = 7.0;
         boolean isRising = false;
