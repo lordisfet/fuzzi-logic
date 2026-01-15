@@ -10,10 +10,15 @@ public final class FuzzyMath {
             throw new IllegalArgumentException("min cant be equal max for linear function");
         }
 
-        if (isRising) {
-            return (x - min) / (max - min);
-        } else
-            return (max - x) / (max - min);
+        double result = isRising ? (x - min) / (max - min) : (max - x) / (max - min);
+
+        if (Double.compare(result, 0) < 0) {
+            return 0;
+        }
+        if (Double.compare(result, 1) > 0) {
+            return 1;
+        }
+        return result;
     }
 
     public static double cosine(double x, double min, double max, double phi) {
