@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ZSShapedTest {
+class ZSShapedFunctionTest {
 
     @Test
     void testZSShapedCalculation() {
         double a = 3, b = 6, eps = 0.00001;
-        MembershipFunction function = new ZSShaped(a, b, true);
+        MembershipFunction function = new ZSShapedFunction(a, b, true);
 
         assertEquals(1, function.calculate(a), eps);
         assertEquals(1. / 2, function.calculate((a + b) / 2), eps);

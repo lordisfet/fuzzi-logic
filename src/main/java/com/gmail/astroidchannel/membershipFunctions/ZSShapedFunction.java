@@ -7,20 +7,20 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class ZSShaped implements MembershipFunction {
+public class ZSShapedFunction implements MembershipFunction {
     private static final double phi = 1./2;
     private static final double beta = 1./2;
     private double a;
     private double b;
     private boolean isZShaped;
 
-    public ZSShaped(double a, double b, boolean isZShaped) {
+    public ZSShapedFunction(double a, double b, boolean isZShaped) {
         this.a = a;
         this.b = b;
         this.isZShaped = isZShaped;
     }
 
-    public ZSShaped(ZSShaped other) {
+    public ZSShapedFunction(ZSShapedFunction other) {
         this.a = other.a;
         this.b = other.b;
         this.isZShaped = other.isZShaped;
@@ -90,7 +90,7 @@ public class ZSShaped implements MembershipFunction {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ZSShaped zsShaped = (ZSShaped) o;
+        ZSShapedFunction zsShaped = (ZSShapedFunction) o;
         return Double.compare(a, zsShaped.a) == 0 && Double.compare(b, zsShaped.b) == 0 && isZShaped == zsShaped.isZShaped;
     }
 

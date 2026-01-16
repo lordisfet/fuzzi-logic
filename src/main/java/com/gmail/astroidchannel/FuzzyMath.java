@@ -26,4 +26,9 @@ public final class FuzzyMath {
         // return phi + (1 - phi) * Math.cos(Math.PI * (x - min) / (max - min));
         return phi + (beta * Math.cos(Math.PI * (x - min) / (max - min)));
     }
+
+    public static double sigmoid(double x, double a, double b) {
+
+        return 1 / (1 + Math.pow(Math.E, -a * (x - b)));
+    }
 }
