@@ -7,24 +7,23 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class zsShaped implements MembershipFunction {
+public class ZSShaped implements MembershipFunction {
+    private static final double phi = 1./2;
+    private static final double beta = 1./2;
     private double a;
     private double b;
-    private double coefficient;
-    private boolean isRising;
+    private boolean isZShaped;
 
-    public zsShaped(double a, double b, double coefficient, boolean isRising) {
+    public ZSShaped(double a, double b, boolean isZShaped) {
         this.a = a;
         this.b = b;
-        this.coefficient = coefficient;
-        this.isRising = isRising;
+        this.isZShaped = isZShaped;
     }
 
-    public zsShaped(zsShaped other) {
+    public ZSShaped(ZSShaped other) {
         this.a = other.a;
         this.b = other.b;
-        this.coefficient = other.coefficient;
-        this.isRising = other.isRising;
+        this.isZShaped = other.isZShaped;
     }
 
     public double getA() {
@@ -43,32 +42,24 @@ public class zsShaped implements MembershipFunction {
         this.b = b;
     }
 
-    public double getCoefficient() {
-        return coefficient;
+    public boolean isZShaped() {
+        return isZShaped;
     }
 
-    public void setCoefficient(double coefficient) {
-        this.coefficient = coefficient;
-    }
-
-    public boolean isRising() {
-        return isRising;
-    }
-
-    public void setRising(boolean rising) {
-        isRising = rising;
+    public void setZShaped(boolean ZShaped) {
+        isZShaped = ZShaped;
     }
 
     @Override
     public double calculate(double x) {
         if (Double.compare(x, a) <= 0) {
-            return isRising ? 0 : 1;
+            return isZShaped ? 1 : 0;
         }
         if (Double.compare(x, b) >= 0) {
-            return isRising ? 1 : 0;
+            return isZShaped ? 0 : 1;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) < 0) {
-            return FuzzyMath.cosine(x, a, b, coefficient);
+            return FuzzyMath.cosine(x, a, b, phi, beta);
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
@@ -81,12 +72,12 @@ public class zsShaped implements MembershipFunction {
 
     @Override
     public Range<Double> findCarrier() {
-        return isRising ? Range.open(a, Double.MAX_VALUE) : Range.open(Double.MIN_VALUE, b);
+        return isZShaped ? Range.open(Double.MIN_VALUE, b) : Range.open(a, Double.MAX_VALUE);
     }
 
     @Override
     public Range<Double> findCore() {
-        return isRising ? Range.closed(b, Double.MAX_VALUE) : Range.closed(Double.MIN_VALUE, a);
+        return isZShaped ? Range.closed(Double.MIN_VALUE, a) : Range.closed(b, Double.MAX_VALUE);
     }
 
     @Override
@@ -99,21 +90,21 @@ public class zsShaped implements MembershipFunction {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        zsShaped zsShaped = (zsShaped) o;
-        return Double.compare(a, zsShaped.a) == 0 && Double.compare(b, zsShaped.b) == 0 && Double.compare(coefficient, zsShaped.coefficient) == 0;
+        ZSShaped zsShaped = (ZSShaped) o;
+        return Double.compare(a, zsShaped.a) == 0 && Double.compare(b, zsShaped.b) == 0 && isZShaped == zsShaped.isZShaped;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b, coefficient);
+        return Objects.hash(a, b, isZShaped);
     }
 
     @Override
     public String toString() {
-        return "zShaped{" +
+        return "ZSShaped{" +
                 "a=" + a +
                 ", b=" + b +
-                ", coefficient=" + coefficient +
+                ", isZShaped=" + isZShaped +
                 '}';
     }
 }
