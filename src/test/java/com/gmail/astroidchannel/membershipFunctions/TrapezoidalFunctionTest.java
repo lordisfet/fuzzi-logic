@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TrapezoidalFunctionTest {
 
     @Test
-    void testTrapezoidalCalculate() {
+    void calculate() {
         double a = 1, b = 3, c = 5, d = 8;
         MembershipFunction function = new TrapezoidalFunction(a, b, c, d);
 

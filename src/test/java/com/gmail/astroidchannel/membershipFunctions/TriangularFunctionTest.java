@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TriangularFunctionTest {
 
     @Test
-    void testTriangularCalculation() {
+    void calculate() {
         double a = 2, b = 4, c = 7;
         MembershipFunction function = new TriangularFunction(a, b, c);
 

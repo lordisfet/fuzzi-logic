@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ZSShapedFunctionTest {
 
     @Test
-    void testZSShapedCalculation() {
+    void calculate() {
         double a = 3, b = 6, eps = 0.00001;
         MembershipFunction function = new ZSShapedFunction(a, b, true);
 
