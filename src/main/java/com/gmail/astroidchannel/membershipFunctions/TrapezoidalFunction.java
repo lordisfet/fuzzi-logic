@@ -1,22 +1,28 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
 import com.gmail.astroidchannel.FuzzyMath;
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
 import com.google.common.collect.Range;
+
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class TrapezoidalFunction implements MembershipFunction {
+public class TrapezoidalFunction implements MembershipFunction, XNormalization {
     private double a;
     private double b;
     private double c;
     private double d;
+    private TransitionCurve leftPart;
+    private TransitionCurve rightPart;
 
-    public TrapezoidalFunction(double a, double b, double c, double d) {
+    public TrapezoidalFunction(double a, double b, double c, double d, TransitionCurve leftPart, TransitionCurve rightPart) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.d = d;
+        this.leftPart = leftPart;
+        this.rightPart = rightPart;
     }
 
     public TrapezoidalFunction(TrapezoidalFunction other) {
@@ -24,6 +30,8 @@ public class TrapezoidalFunction implements MembershipFunction {
         this.b = other.b;
         this.c = other.c;
         this.d = other.d;
+        this.leftPart = other.leftPart;
+        this.rightPart = other.rightPart;
     }
 
     public double getA() {
@@ -58,6 +66,22 @@ public class TrapezoidalFunction implements MembershipFunction {
         this.d = d;
     }
 
+    public TransitionCurve getLeftPart() {
+        return leftPart;
+    }
+
+    public void setLeftPart(TransitionCurve leftPart) {
+        this.leftPart = leftPart;
+    }
+
+    public TransitionCurve getRightPart() {
+        return rightPart;
+    }
+
+    public void setRightPart(TransitionCurve rightPart) {
+        this.rightPart = rightPart;
+    }
+
     @Override
     public double calculate(double x) {
         if (Double.compare(x, a) <= 0) {
@@ -66,14 +90,14 @@ public class TrapezoidalFunction implements MembershipFunction {
         if (Double.compare(x, d) >= 0) {
             return 0;
         }
-        if (Double.compare(x, b) >= 0 && Double.compare(x,c) <= 0) {
+        if (Double.compare(x, b) >= 0 && Double.compare(x, c) <= 0) {
             return 1;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
-            return FuzzyMath.linearThroughDots(x, a, b, true);
+            return leftPart.calculate(normalization(x, a, b));
         }
         if (Double.compare(x, c) > 0 && Double.compare(x, d) <= 0) {
-            return FuzzyMath.linearThroughDots(x, c, d, false);
+            return 1 - rightPart.calculate(normalization(x, c, d));
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
@@ -97,8 +121,8 @@ public class TrapezoidalFunction implements MembershipFunction {
     @Override
     public Set<Range<Double>> findSpectrum() {
         Set<Range<Double>> boundaries = new LinkedHashSet<>();
-        boundaries.add(Range.open(a,b));
-        boundaries.add(Range.open(b,d));
+        boundaries.add(Range.open(a, b));
+        boundaries.add(Range.open(b, d));
 
         return boundaries;
     }
@@ -107,12 +131,12 @@ public class TrapezoidalFunction implements MembershipFunction {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TrapezoidalFunction that = (TrapezoidalFunction) o;
-        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0 && Double.compare(d, that.d) == 0;
+        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0 && Double.compare(d, that.d) == 0 && Objects.equals(leftPart, that.leftPart) && Objects.equals(rightPart, that.rightPart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b, c, d);
+        return Objects.hash(a, b, c, d, leftPart, rightPart);
     }
 
     @Override
@@ -122,6 +146,8 @@ public class TrapezoidalFunction implements MembershipFunction {
                 ", b=" + b +
                 ", c=" + c +
                 ", d=" + d +
+                ", leftPart=" + leftPart +
+                ", rightPart=" + rightPart +
                 '}';
     }
 }
