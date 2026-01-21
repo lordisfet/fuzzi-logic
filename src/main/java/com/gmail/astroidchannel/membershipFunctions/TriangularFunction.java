@@ -1,6 +1,5 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
-import com.gmail.astroidchannel.FuzzyMath;
 import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
 import com.google.common.collect.Range;
 

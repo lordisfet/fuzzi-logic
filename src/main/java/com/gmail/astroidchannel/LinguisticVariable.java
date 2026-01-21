@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class LinguisticVariable {
+    public static final double EPS = 0.00001;
     private String name;
     private double leftBorder;
     private double rightBorder;
@@ -96,7 +97,7 @@ public class LinguisticVariable {
         for (Map.Entry<String, MembershipFunction> entry : terms.entrySet()) {
             double degree = entry.getValue().calculate(value);
 
-            if (degree > FuzzyMath.EPS) {
+            if (degree > EPS) {
                 result.put(entry.getKey(), degree);
             }
         }

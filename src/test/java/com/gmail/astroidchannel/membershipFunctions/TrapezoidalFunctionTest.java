@@ -3,7 +3,7 @@ package com.gmail.astroidchannel.membershipFunctions;
 
 import org.junit.jupiter.api.Test;
 
-import static com.gmail.astroidchannel.FuzzyMath.EPS;
+import static com.gmail.astroidchannel.LinguisticVariable.EPS;
 import static com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation.*;
 import static org.junit.jupiter.api.Assertions.*;
 
