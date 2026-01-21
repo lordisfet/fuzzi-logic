@@ -97,7 +97,7 @@ public class TrapezoidalFunction implements MembershipFunction, XNormalization {
             return leftPart.calculate(normalization(x, a, b));
         }
         if (Double.compare(x, c) > 0 && Double.compare(x, d) <= 0) {
-            return 1 - rightPart.calculate(normalization(x, c, d));
+            return MembershipFunction.invert0to1Value(rightPart.calculate(normalization(x, c, d)));
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");

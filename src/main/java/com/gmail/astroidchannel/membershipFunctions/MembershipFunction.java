@@ -13,6 +13,9 @@ public interface MembershipFunction {
 
     Range<Double> findCore();
 
+    static double invert0to1Value(double y) {
+        return 1 - y;
+    }
     //TODO: Maybe i can tree use a simple analise with searching max/min value of function in exchange for the override methods
     Set<Range<Double>> findSpectrum();
     // TODO: isNormal

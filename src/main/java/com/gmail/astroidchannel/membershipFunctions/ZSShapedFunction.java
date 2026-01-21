@@ -1,29 +1,35 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
 import com.gmail.astroidchannel.FuzzyMath;
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
 import com.google.common.collect.Range;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class ZSShapedFunction implements MembershipFunction {
-    private static final double phi = 1./2;
-    private static final double beta = 1./2;
+public class ZSShapedFunction implements MembershipFunction, XNormalization {
     private double a;
     private double b;
-    private boolean isZShaped;
+    private Shape shape;
+    private TransitionCurve centralPart;
 
-    public ZSShapedFunction(double a, double b, boolean isZShaped) {
+    public enum Shape {
+        Z, S
+    }
+
+    public ZSShapedFunction(double a, double b, Shape shape, TransitionCurve centralPart) {
         this.a = a;
         this.b = b;
-        this.isZShaped = isZShaped;
+        this.shape = shape;
+        this.centralPart = centralPart;
     }
 
     public ZSShapedFunction(ZSShapedFunction other) {
         this.a = other.a;
         this.b = other.b;
-        this.isZShaped = other.isZShaped;
+        this.shape = other.shape;
+        this.centralPart = other.centralPart;
     }
 
     public double getA() {
@@ -42,24 +48,33 @@ public class ZSShapedFunction implements MembershipFunction {
         this.b = b;
     }
 
-    public boolean isZShaped() {
-        return isZShaped;
+    public Shape getShape() {
+        return shape;
     }
 
-    public void setZShaped(boolean ZShaped) {
-        isZShaped = ZShaped;
+    public void setShape(Shape shape) {
+        this.shape = shape;
+    }
+
+    public TransitionCurve getCentralPart() {
+        return centralPart;
+    }
+
+    public void setCentralPart(TransitionCurve centralPart) {
+        this.centralPart = centralPart;
     }
 
     @Override
     public double calculate(double x) {
-        if (Double.compare(x, a) <= 0) {
-            return isZShaped ? 1 : 0;
+        if (x <= a) {
+            return shape.ordinal() == Shape.Z.ordinal() ? 1 : 0;
         }
-        if (Double.compare(x, b) >= 0) {
-            return isZShaped ? 0 : 1;
+        if (x >= b) {
+            return shape.ordinal() == Shape.Z.ordinal() ? 0 : 1;
         }
-        if (Double.compare(x, a) > 0 && Double.compare(x, b) < 0) {
-            return FuzzyMath.cosine(x, a, b, phi, beta);
+        if (x > a && x < b) {
+            double value = centralPart.calculate(normalization(x, a, b));
+            return shape.ordinal() == Shape.Z.ordinal() ? value : MembershipFunction.invert0to1Value(value);
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
@@ -72,12 +87,12 @@ public class ZSShapedFunction implements MembershipFunction {
 
     @Override
     public Range<Double> findCarrier() {
-        return isZShaped ? Range.open(Double.MIN_VALUE, b) : Range.open(a, Double.MAX_VALUE);
+        return shape.ordinal() == Shape.Z.ordinal() ? Range.open(Double.MIN_VALUE, b) : Range.open(a, Double.MAX_VALUE);
     }
 
     @Override
     public Range<Double> findCore() {
-        return isZShaped ? Range.closed(Double.MIN_VALUE, a) : Range.closed(b, Double.MAX_VALUE);
+        return shape.ordinal() == Shape.Z.ordinal() ? Range.closed(Double.MIN_VALUE, a) : Range.closed(b, Double.MAX_VALUE);
     }
 
     @Override
@@ -90,21 +105,22 @@ public class ZSShapedFunction implements MembershipFunction {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ZSShapedFunction zsShaped = (ZSShapedFunction) o;
-        return Double.compare(a, zsShaped.a) == 0 && Double.compare(b, zsShaped.b) == 0 && isZShaped == zsShaped.isZShaped;
+        ZSShapedFunction that = (ZSShapedFunction) o;
+        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && shape == that.shape && Objects.equals(centralPart, that.centralPart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b, isZShaped);
+        return Objects.hash(a, b, shape, centralPart);
     }
 
     @Override
     public String toString() {
-        return "ZSShaped{" +
+        return "ZSShapedFunction{" +
                 "a=" + a +
                 ", b=" + b +
-                ", isZShaped=" + isZShaped +
+                ", shape=" + shape +
+                ", centralPart=" + centralPart +
                 '}';
     }
 }

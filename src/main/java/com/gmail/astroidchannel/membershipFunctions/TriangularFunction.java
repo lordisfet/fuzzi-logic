@@ -92,7 +92,7 @@ public class TriangularFunction implements MembershipFunction, XNormalization {
             return leftPart.calculate(normalization(x, a, b));
         }
         if (Double.compare(x, b) > 0 && Double.compare(x, c) <= 0) {
-            return 1 - rightPart.calculate(normalization(x, b, c));
+            return MembershipFunction.invert0to1Value(rightPart.calculate(normalization(x, b, c)));
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
