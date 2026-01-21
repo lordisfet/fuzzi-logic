@@ -1,6 +1,8 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
 import com.gmail.astroidchannel.FuzzyMath;
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation;
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
 import com.google.common.collect.Range;
 
 import java.util.LinkedHashSet;
@@ -13,11 +15,25 @@ import java.util.Set;
 public class SigmoidFunction implements MembershipFunction {
     private double a;
     private double b;
+    private TransitionCurve sigmoid;
 
     public SigmoidFunction(double a, double b) {
         //TODO: Am i need exception if a==b?
         this.a = a;
         this.b = b;
+        sigmoid = CurveCalculation.getSigmoid(a,b);
+    }
+
+    public SigmoidFunction(double a, double b, TransitionCurve sigmoid) {
+        this.a = a;
+        this.b = b;
+        this.sigmoid = sigmoid;
+    }
+
+    public SigmoidFunction(SigmoidFunction other) {
+        this.a = other.a;
+        this.b = other.b;
+        this.sigmoid = CurveCalculation.getSigmoid(other.a, other.b);
     }
 
     public double getA() {
@@ -38,7 +54,7 @@ public class SigmoidFunction implements MembershipFunction {
 
     @Override
     public double calculate(double x) {
-        return FuzzyMath.sigmoid(x, a, b);
+        return sigmoid.calculate(x);
     }
 
     @Override
