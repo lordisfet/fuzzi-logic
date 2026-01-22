@@ -1,19 +1,43 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation;
 import org.junit.jupiter.api.Test;
 
+import static com.gmail.astroidchannel.LinguisticVariable.EPS;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ZSShapedFunctionTest {
 
     @Test
     void calculate() {
-        double a = 3, b = 6, eps = 0.00001;
-        MembershipFunction function = new ZSShapedFunction(a, b, true);
+        double a = 3, b = 6;
+        MembershipFunction function1 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.Z, CurveCalculation.COSINE);
 
-        assertEquals(1, function.calculate(a), eps);
-        assertEquals(1. / 2, function.calculate((a + b) / 2), eps);
-        assertEquals(0.20611, function.calculate(0.85 * b), eps);
-        assertEquals(0, function.calculate(b), eps);
+        assertEquals(1, function1.calculate(a - 1), EPS);
+        assertEquals(1, function1.calculate(a), EPS);
+        assertEquals(1. / 2, function1.calculate((a + b) / 2), EPS);
+        assertEquals(0.20611, function1.calculate(0.85 * b), EPS);
+        assertEquals(0, function1.calculate(b), EPS);
+        assertEquals(0, function1.calculate(b + 1), EPS);
+
+        MembershipFunction function2 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.S, CurveCalculation.COSINE);
+
+        assertEquals(0, function2.calculate(a - 1), EPS);
+        assertEquals(0, function2.calculate(a), EPS);
+        assertEquals(1. / 2, function2.calculate((a + b) / 2), EPS);
+        assertEquals(1 - 0.20611, function2.calculate(0.85 * b), EPS);
+        assertEquals(1, function2.calculate(b), EPS);
+        assertEquals(1, function2.calculate(b + 1), EPS);
+
+        a = 2; b = 4;
+        double c = 7;
+        MembershipFunction function3 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.Z, CurveCalculation.LINEAR);
+
+        assertEquals(1, function3.calculate(1), EPS);
+        assertEquals(1, function3.calculate(a), EPS);
+        assertEquals(0.5, function3.calculate(3), EPS);
+        assertEquals(0, function3.calculate(b), EPS);
+        assertEquals(0, function3.calculate(c), EPS);
+
     }
 }

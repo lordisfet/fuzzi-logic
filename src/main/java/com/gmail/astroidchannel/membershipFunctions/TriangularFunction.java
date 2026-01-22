@@ -1,16 +1,18 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
-import com.gmail.astroidchannel.FuzzyMath;
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
 import com.google.common.collect.Range;
+
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class TriangularFunction implements MembershipFunction {
+public class TriangularFunction implements MembershipFunction, XNormalization {
     private double a;
     private double b;
     private double c;
-
+    private TransitionCurve leftPart;
+    private TransitionCurve rightPart;
 
 //    private double height;
 //    private Range<Double> carrier;
@@ -18,16 +20,20 @@ public class TriangularFunction implements MembershipFunction {
 //    private Set<Range<Double>> spectrum;
 //    private Shape shape; // Опуклість
 
-    public TriangularFunction(double a, double b, double c) {
+    public TriangularFunction(double a, double b, double c, TransitionCurve leftPart, TransitionCurve rightPart) {
         this.a = a;
         this.b = b;
         this.c = c;
+        this.leftPart = leftPart;
+        this.rightPart = rightPart;
     }
 
     public TriangularFunction(TriangularFunction other) {
         this.a = other.a;
         this.b = other.b;
         this.c = other.c;
+        this.leftPart = other.leftPart;
+        this.rightPart = other.rightPart;
     }
 
     public double getA() {
@@ -54,6 +60,22 @@ public class TriangularFunction implements MembershipFunction {
         this.c = c;
     }
 
+    public TransitionCurve getLeftPart() {
+        return leftPart;
+    }
+
+    public void setLeftPart(TransitionCurve leftPart) {
+        this.leftPart = leftPart;
+    }
+
+    public TransitionCurve getRightPart() {
+        return rightPart;
+    }
+
+    public void setRightPart(TransitionCurve rightPart) {
+        this.rightPart = rightPart;
+    }
+
     @Override
     public double calculate(double x) {
         if (x == b) {
@@ -66,10 +88,10 @@ public class TriangularFunction implements MembershipFunction {
             return 0;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
-            return FuzzyMath.linearThroughDots(x, a, b, true);
+            return leftPart.calculate(normalization(x, a, b));
         }
         if (Double.compare(x, b) > 0 && Double.compare(x, c) <= 0) {
-            return FuzzyMath.linearThroughDots(x, b, c, false);
+            return MembershipFunction.invert0to1Value(rightPart.calculate(normalization(x, b, c)));
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
@@ -93,8 +115,8 @@ public class TriangularFunction implements MembershipFunction {
     @Override
     public Set<Range<Double>> findSpectrum() {
         Set<Range<Double>> boundaries = new LinkedHashSet<>();
-        boundaries.add(Range.open(a,b));
-        boundaries.add(Range.open(b,c));
+        boundaries.add(Range.open(a, b));
+        boundaries.add(Range.open(b, c));
 
         return boundaries;
     }
@@ -103,12 +125,12 @@ public class TriangularFunction implements MembershipFunction {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TriangularFunction that = (TriangularFunction) o;
-        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0;
+        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0 && Objects.equals(leftPart, that.leftPart) && Objects.equals(rightPart, that.rightPart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b, c);
+        return Objects.hash(a, b, c, leftPart, rightPart);
     }
 
     @Override
@@ -117,6 +139,8 @@ public class TriangularFunction implements MembershipFunction {
                 "a=" + a +
                 ", b=" + b +
                 ", c=" + c +
+                ", leftPart=" + leftPart +
+                ", rightPart=" + rightPart +
                 '}';
     }
 }
