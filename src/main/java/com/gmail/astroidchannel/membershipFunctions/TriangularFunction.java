@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class TriangularFunction implements MembershipFunction, XNormalization {
+public class TriangularFunction implements MembershipFunction {
     private double a;
     private double b;
     private double c;
@@ -19,6 +19,14 @@ public class TriangularFunction implements MembershipFunction, XNormalization {
 //    private Range<Double> core;
 //    private Set<Range<Double>> spectrum;
 //    private Shape shape; // Опуклість
+
+    public TriangularFunction(double a, double b, double c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.leftPart = TransitionCurve.getLinear(a, b);
+        this.rightPart = TransitionCurve.getLinear(b, c);
+    }
 
     public TriangularFunction(double a, double b, double c, TransitionCurve leftPart, TransitionCurve rightPart) {
         this.a = a;
@@ -91,7 +99,7 @@ public class TriangularFunction implements MembershipFunction, XNormalization {
             return leftPart.calculate(normalization(x, a, b));
         }
         if (Double.compare(x, b) > 0 && Double.compare(x, c) <= 0) {
-            return MembershipFunction.invert0to1Value(rightPart.calculate(normalization(x, b, c)));
+            return MembershipFunction.invert0to1Value(rightPart.calculate(x));
         }
 
         throw new IllegalArgumentException("x = " + x + " is not in conditions");
