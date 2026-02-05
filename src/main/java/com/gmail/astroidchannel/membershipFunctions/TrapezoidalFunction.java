@@ -105,7 +105,7 @@ public class TrapezoidalFunction implements MembershipFunction, XNormalization {
             return 1;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
-            return leftPart.calculate(normalization(x, a, b));
+            return leftPart.calculate(x);
         }
         if (Double.compare(x, c) > 0 && Double.compare(x, d) <= 0) {
             return MembershipFunction.invert0to1Value(rightPart.calculate(x));
