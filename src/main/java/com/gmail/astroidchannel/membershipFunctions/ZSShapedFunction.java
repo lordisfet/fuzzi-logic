@@ -1,7 +1,10 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
 import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation;
 import com.google.common.collect.Range;
+
+import static com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation.getCosine;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -15,6 +18,13 @@ public class ZSShapedFunction implements MembershipFunction, XNormalization {
 
     public enum Shape {
         Z, S
+    }
+
+        public ZSShapedFunction(double a, double b, Shape shape) {
+        this.a = a;
+        this.b = b;
+        this.shape = shape;
+        this.centralPart = getCosine(a, b);
     }
 
     public ZSShapedFunction(double a, double b, Shape shape, TransitionCurve centralPart) {
@@ -72,7 +82,7 @@ public class ZSShapedFunction implements MembershipFunction, XNormalization {
             return shape.ordinal() == Shape.Z.ordinal() ? 0 : 1;
         }
         if (x > a && x < b) {
-            double value = centralPart.calculate(normalization(x, a, b));
+            double value = centralPart.calculate(x);
             return shape.ordinal() == Shape.Z.ordinal() ? value : MembershipFunction.invert0to1Value(value);
         }
 

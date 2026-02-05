@@ -11,7 +11,7 @@ class TriangularFunctionTest {
     @Test
     void calculate() {
         double a = 2, b = 4, c = 7;
-        MembershipFunction function = new TriangularFunction(a, b, c, LINEAR, LINEAR);
+        MembershipFunction function = new TriangularFunction(a, b, c);
 
         assertEquals(0, function.calculate(1), EPS);
         assertEquals(0, function.calculate(a), EPS);

@@ -1,7 +1,7 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
-import com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation;
 import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation;
 import com.google.common.collect.Range;
 
 import java.util.LinkedHashSet;
@@ -14,25 +14,25 @@ import java.util.Set;
 public class SigmoidFunction implements MembershipFunction {
     private double a;
     private double b;
-    private final TransitionCurve sigmoid;
+    private final TransitionCurve curve;
 
     public SigmoidFunction(double a, double b) {
         //TODO: Am i need exception if a==b?
         this.a = a;
         this.b = b;
-        sigmoid = CurveCalculation.getSigmoid(a,b);
+        this.curve = CurveCalculation.getSigmoid(a,b);
     }
 
-    public SigmoidFunction(double a, double b, TransitionCurve sigmoid) {
+    public SigmoidFunction(double a, double b, TransitionCurve curve) {
         this.a = a;
         this.b = b;
-        this.sigmoid = sigmoid;
+        this.curve = curve;
     }
 
     public SigmoidFunction(SigmoidFunction other) {
         this.a = other.a;
         this.b = other.b;
-        this.sigmoid = CurveCalculation.getSigmoid(other.a, other.b);
+        this.curve = CurveCalculation.getSigmoid(other.a, other.b);
     }
 
     public double getA() {
@@ -51,13 +51,13 @@ public class SigmoidFunction implements MembershipFunction {
         this.b = b;
     }
 
-    public TransitionCurve getSigmoid() {
-        return sigmoid;
+    public TransitionCurve getCurve() {
+        return curve;
     }
 
     @Override
     public double calculate(double x) {
-        return sigmoid.calculate(x);
+        return curve.calculate(x);
     }
 
     @Override

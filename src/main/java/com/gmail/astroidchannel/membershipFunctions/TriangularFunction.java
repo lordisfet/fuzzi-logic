@@ -1,6 +1,7 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
 import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
+import static com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation.*;      
 import com.google.common.collect.Range;
 
 import java.util.LinkedHashSet;
@@ -24,8 +25,8 @@ public class TriangularFunction implements MembershipFunction {
         this.a = a;
         this.b = b;
         this.c = c;
-        this.leftPart = TransitionCurve.getLinear(a, b);
-        this.rightPart = TransitionCurve.getLinear(b, c);
+        this.leftPart = getLinear(a, b);
+        this.rightPart = getLinear(b, c);
     }
 
     public TriangularFunction(double a, double b, double c, TransitionCurve leftPart, TransitionCurve rightPart) {
@@ -96,7 +97,7 @@ public class TriangularFunction implements MembershipFunction {
             return 0;
         }
         if (Double.compare(x, a) > 0 && Double.compare(x, b) <= 0) {
-            return leftPart.calculate(normalization(x, a, b));
+            return leftPart.calculate(x);
         }
         if (Double.compare(x, b) > 0 && Double.compare(x, c) <= 0) {
             return MembershipFunction.invert0to1Value(rightPart.calculate(x));

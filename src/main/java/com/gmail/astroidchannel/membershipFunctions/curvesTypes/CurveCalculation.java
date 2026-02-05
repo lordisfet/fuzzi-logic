@@ -13,6 +13,8 @@ public class CurveCalculation {
     public static TransitionCurve getSigmoid(double slope, double inflectionPoint) {
         return t -> 1.0 / (1.0 + Math.exp(-slope * (t - inflectionPoint)));
     }
-    public static final TransitionCurve BELL = t -> Math.exp(-Math.pow(t - 0.5, 2) / 0.125);
+    public static final TransitionCurve getBell(double a, double b, double c) {
+        return t -> 1.0 / (1.0 + Math.pow(Math.abs((t - c) / a), 2 * b));
+    }
 
 }
