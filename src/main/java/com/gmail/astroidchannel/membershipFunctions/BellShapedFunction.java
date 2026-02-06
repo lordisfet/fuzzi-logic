@@ -10,6 +10,7 @@ public class BellShapedFunction /*implements MembershipFunction*/ {
     private double b;
     private double c;
 
+    // little test
     // @Override
     // public double calculate(double x) {
     //     return sigmoid.calculate(x);
