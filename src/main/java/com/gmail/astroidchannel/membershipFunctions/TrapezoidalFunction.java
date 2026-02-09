@@ -10,7 +10,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class TrapezoidalFunction implements MembershipFunction, XNormalization {
+public class TrapezoidalFunction implements MembershipFunction {
     private double a;
     private double b;
     private double c;

@@ -10,11 +10,11 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class ZSShapedFunction implements MembershipFunction, XNormalization {
+public class ZSShapedFunction implements MembershipFunction {
     private double a;
     private double b;
     private Shape shape;
-    private TransitionCurve centralPart;
+    private TransitionCurve curve;
 
     public enum Shape {
         Z, S
@@ -24,21 +24,21 @@ public class ZSShapedFunction implements MembershipFunction, XNormalization {
         this.a = a;
         this.b = b;
         this.shape = shape;
-        this.centralPart = getCosine(a, b);
+        this.curve = getCosine(a, b);
     }
 
-    public ZSShapedFunction(double a, double b, Shape shape, TransitionCurve centralPart) {
+    public ZSShapedFunction(double a, double b, Shape shape, TransitionCurve curve) {
         this.a = a;
         this.b = b;
         this.shape = shape;
-        this.centralPart = centralPart;
+        this.curve = curve;
     }
 
     public ZSShapedFunction(ZSShapedFunction other) {
         this.a = other.a;
         this.b = other.b;
         this.shape = other.shape;
-        this.centralPart = other.centralPart;
+        this.curve = other.curve;
     }
 
     public double getA() {
@@ -65,12 +65,12 @@ public class ZSShapedFunction implements MembershipFunction, XNormalization {
         this.shape = shape;
     }
 
-    public TransitionCurve getCentralPart() {
-        return centralPart;
+    public TransitionCurve getCurve() {
+        return curve;
     }
 
-    public void setCentralPart(TransitionCurve centralPart) {
-        this.centralPart = centralPart;
+    public void setCurve(TransitionCurve curve) {
+        this.curve = curve;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ZSShapedFunction implements MembershipFunction, XNormalization {
             return shape.ordinal() == Shape.Z.ordinal() ? 0 : 1;
         }
         if (x > a && x < b) {
-            double value = centralPart.calculate(x);
+            double value = curve.calculate(x);
             return shape.ordinal() == Shape.Z.ordinal() ? value : MembershipFunction.invert0to1Value(value);
         }
 
@@ -115,12 +115,12 @@ public class ZSShapedFunction implements MembershipFunction, XNormalization {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ZSShapedFunction that = (ZSShapedFunction) o;
-        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && shape == that.shape && Objects.equals(centralPart, that.centralPart);
+        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && shape == that.shape && Objects.equals(curve, that.curve);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b, shape, centralPart);
+        return Objects.hash(a, b, shape, curve);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class ZSShapedFunction implements MembershipFunction, XNormalization {
                 "a=" + a +
                 ", b=" + b +
                 ", shape=" + shape +
-                ", centralPart=" + centralPart +
+                ", curve=" + curve +
                 '}';
     }
 }

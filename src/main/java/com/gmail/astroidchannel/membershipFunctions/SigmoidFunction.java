@@ -14,7 +14,7 @@ import java.util.Set;
 public class SigmoidFunction implements MembershipFunction {
     private double a;
     private double b;
-    private final TransitionCurve curve;
+    private TransitionCurve curve;
 
     public SigmoidFunction(double a, double b) {
         //TODO: Am i need exception if a==b?
@@ -53,6 +53,10 @@ public class SigmoidFunction implements MembershipFunction {
 
     public TransitionCurve getCurve() {
         return curve;
+    }
+
+    public void setCurve(TransitionCurve curve) {
+        this.curve = curve;
     }
 
     @Override
