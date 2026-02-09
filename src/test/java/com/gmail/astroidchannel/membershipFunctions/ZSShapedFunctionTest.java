@@ -11,7 +11,7 @@ class ZSShapedFunctionTest {
     @Test
     void calculate() {
         double a = 3, b = 6;
-        MembershipFunction function1 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.Z, CurveCalculation.COSINE);
+        MembershipFunction function1 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.Z);
 
         assertEquals(1, function1.calculate(a - 1), EPS);
         assertEquals(1, function1.calculate(a), EPS);
@@ -20,7 +20,7 @@ class ZSShapedFunctionTest {
         assertEquals(0, function1.calculate(b), EPS);
         assertEquals(0, function1.calculate(b + 1), EPS);
 
-        MembershipFunction function2 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.S, CurveCalculation.COSINE);
+        MembershipFunction function2 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.S);
 
         assertEquals(0, function2.calculate(a - 1), EPS);
         assertEquals(0, function2.calculate(a), EPS);
@@ -31,7 +31,7 @@ class ZSShapedFunctionTest {
 
         a = 2; b = 4;
         double c = 7;
-        MembershipFunction function3 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.Z, CurveCalculation.LINEAR);
+        MembershipFunction function3 = new ZSShapedFunction(a, b, ZSShapedFunction.Shape.Z, CurveCalculation.getLinear(a, b));
 
         assertEquals(1, function3.calculate(1), EPS);
         assertEquals(1, function3.calculate(a), EPS);

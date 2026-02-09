@@ -1,38 +1,39 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
-import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
-import com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation;
-import com.google.common.collect.Range;
-
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * If a>0 function will be S-shaped, if a<0 function will be z-shaped
- **/
-public class SigmoidFunction implements MembershipFunction {
+import com.gmail.astroidchannel.membershipFunctions.curvesTypes.TransitionCurve;
+import com.google.common.collect.Range;
+
+import static com.gmail.astroidchannel.membershipFunctions.curvesTypes.CurveCalculation.getBell;
+
+public class BellShapedFunction implements MembershipFunction {
     private double a;
     private double b;
+    private double c;
     private TransitionCurve curve;
 
-    public SigmoidFunction(double a, double b) {
-        //TODO: Am i need exception if a==b?
+    public BellShapedFunction(double a, double b, double c) {
         this.a = a;
         this.b = b;
-        this.curve = CurveCalculation.getSigmoid(a,b);
+        this.c = c;
+        this.curve = getBell(a, b, c);
     }
 
-    public SigmoidFunction(double a, double b, TransitionCurve curve) {
+    public BellShapedFunction(double a, double b, double c, TransitionCurve curve) {
         this.a = a;
         this.b = b;
+        this.c = c;
         this.curve = curve;
     }
 
-    public SigmoidFunction(SigmoidFunction other) {
+    public BellShapedFunction(BellShapedFunction other) {
         this.a = other.a;
         this.b = other.b;
-        this.curve = CurveCalculation.getSigmoid(other.a, other.b);
+        this.c = other.c;
+        this.curve = other.curve;
     }
 
     public double getA() {
@@ -51,11 +52,19 @@ public class SigmoidFunction implements MembershipFunction {
         this.b = b;
     }
 
+    public double getC() {
+        return c;
+    }
+
+    public void setC(double c) {
+        this.c = c;
+    }
+
     public TransitionCurve getCurve() {
         return curve;
     }
 
-    public void setCurve(TransitionCurve curve) {
+    public void setBell(TransitionCurve curve) {
         this.curve = curve;
     }
 
@@ -76,13 +85,14 @@ public class SigmoidFunction implements MembershipFunction {
 
     @Override
     public Range<Double> findCore() {
-        return null;
+        return Range.closed(c, c);
     }
 
     @Override
     public Set<Range<Double>> findSpectrum() {
         Set<Range<Double>> boundaries = new LinkedHashSet<>();
-        boundaries.add(Range.open(Double.MIN_VALUE, Double.MAX_VALUE));
+        boundaries.add(Range.open(Double.MIN_VALUE, c));
+        boundaries.add(Range.open(c, Double.MAX_VALUE));
 
         return boundaries;
     }
@@ -90,20 +100,22 @@ public class SigmoidFunction implements MembershipFunction {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        SigmoidFunction that = (SigmoidFunction) o;
-        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0;
+        BellShapedFunction that = (BellShapedFunction) o;
+        return Double.compare(a, that.a) == 0 && Double.compare(b, that.b) == 0 && Double.compare(c, that.c) == 0 && Objects.equals(curve, that.curve);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b);
+        return Objects.hash(a, b, c, curve);
     }
 
     @Override
     public String toString() {
-        return "SigmoidFunction{" +
+        return "BellShapedFunction{" +
                 "a=" + a +
                 ", b=" + b +
+                ", c=" + c +
+                ", curve=" + curve +
                 '}';
     }
 }

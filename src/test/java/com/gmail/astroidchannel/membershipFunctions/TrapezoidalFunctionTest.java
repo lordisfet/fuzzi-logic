@@ -1,6 +1,5 @@
 package com.gmail.astroidchannel.membershipFunctions;
 
-
 import org.junit.jupiter.api.Test;
 
 import static com.gmail.astroidchannel.LinguisticVariable.EPS;
@@ -12,7 +11,7 @@ class TrapezoidalFunctionTest {
     @Test
     void calculate() {
         double a = 1, b = 3, c = 5, d = 8;
-        MembershipFunction function = new TrapezoidalFunction(a, b, c, d, LINEAR, LINEAR);
+        MembershipFunction function = new TrapezoidalFunction(a, b, c, d);
 
         assertEquals(0, function.calculate(-10), EPS);
         assertEquals(0, function.calculate(0), EPS);
